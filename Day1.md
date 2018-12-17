@@ -113,6 +113,30 @@ menu[0]
 #=> 중국집
 ```
 
+`list`는 정렬을 할 수 있다.
+
+```python
+a = [3, 1, 2]
+# 1. sorted
+sorted(a)
+#=> [1,2,3] 리턴
+print(a)
+#[3,1,2]
+a = sorted(a)
+print(a)
+#=> [1,2,3]
+
+# 2. .sort()
+a.sort()
+#=> None 리턴
+print(a)
+#[1,2,3]
+```
+
+
+
+
+
 ### 4)  Dictionary
 
 `Dictionary`는 hash(해시)라고도 불린다. `key`와 `value`가 짝지어져있다.
@@ -241,3 +265,4 @@ __굵게__
 [파이썬 기본을 갈고 닦자](https://wikidocs.net/book/1553)
 
 - 좋은 참고 페이지
+

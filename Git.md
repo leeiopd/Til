@@ -70,3 +70,12 @@ $ git remote add origin https://github.com/leeiopd/Til.git
 $ git push -u origin master
 ```
 
+
+
+git status - 현 상태 확인
+
+git add . - commit 할 파일 담기
+
+git commit -m "~~" - 메세지 ~~로 commit 작성
+
+git push -u orign master - push는 파일 git hub에 올리기

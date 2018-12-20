@@ -62,6 +62,8 @@ def greeting(name):
 
 * `render_template`을 활용하기 위해서는 `import` 해줘야 함!!
 
+(render_template는 html 파일을 return으로 받기위해 필요함)
+
 ```python
 # ello.py
 from flask import Flask, render_template

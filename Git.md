@@ -28,7 +28,7 @@ $ touch a.txt
 $ git add .
 ```
 
-* `git add a.txt`를 해도 되지만, 우선 `it add .` 을 하자!!
+* `git add a.txt`를 해도 되지만, 우선 `git add .` 을 하자!!
 * `.` 은 리눅스 상에서 현재 디렉토리를 뜻한다.
 
 ### 3. git commit

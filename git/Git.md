@@ -79,3 +79,26 @@ git add . - commit 할 파일 담기
 git commit -m "~~" - 메세지 ~~로 commit 작성
 
 git push -u orign master - push는 파일 git hub에 올리기
+
+
+
+## 원격저장소에서 가져오기 (pull)
+
+github 원격 저장소에서 변경된 커밋 내용(파일)을 가졍괴 위해서는 `pull`명령어를 사용한다.
+
+```
+$ gitpull origin matser
+```
+
+
+
+## 원격저장소 복제하기(clone)
+
+원격 저장소를 복제하기 위해서는 `clone`명령어를 사용한다.
+
+``` $ git clone https://~~~~ <- url
+$ git clone https://~~~~ (<- url)
+```
+
+
+

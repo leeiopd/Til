@@ -87,7 +87,7 @@ git push -u orign master - push는 파일 git hub에 올리기
 github 원격 저장소에서 변경된 커밋 내용(파일)을 가졍괴 위해서는 `pull`명령어를 사용한다.
 
 ```
-$ gitpull origin matser
+$ git pull origin matser
 ```
 
 

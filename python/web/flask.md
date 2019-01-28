@@ -23,17 +23,28 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     return "Hello World"
+
+if __name__=='__main__':
+    # host와 port 설정은 c9에서 실행시키기 위해서 설정한 것이다.
+    # 아래와 같이 설정하면 python app.py로 실행 가능함.
+    app.ren(host='0.0.0.0', port='8080', debug=True)
 ```
 
+* c9에서 서버 실행하기
 
+```
+$ flask run -h '0.0.0.0' -p '8080'
+```
 
-* 서버 실행하기
+* 로컬에서 서버 실행하기
 
 ```powershell
 $ FLASK_APP=hello.py flask run
 ```
 
 크롬으로 `http://localhost:5000`, `http://192.0.0.1:5000`을 열어본다!
+
+
 
 ```python
 @app.route("/ssafy")

@@ -2,17 +2,17 @@
 
 ## 1. 시작하기
 
-1. 프로젝트 시작하기
+1. 프로젝트 시작하기 - Django 프로젝트는 app들의 집합
 
    ```bash
-   $ django-admin startproject 프로젝트 이름
+   $ django-admin startproject django-intro(프로젝트 이름)
    ```
 
    아래와 같이 프로젝트 구조가 만들어 진다.
 
    ```text
-   django-intro/
-   	django_intro/
+   django-intro/         -폴더이름
+   	django_intro/     -프로젝트 이름(변경X)
    		__init__.py
    		settings.py
    		urls.py
@@ -109,14 +109,21 @@
 $ python manage.py startapp <app이름>
 ```
 
-```
-settings.py에 app 추가
+```PYTHON
+# settings.py
+
+INSTALLED_APPS 리스트에 app 추가
+
+ALLOWED_HOSTS = ['*']
+
+LANGUAGE_CODE = 'ko-kr'
+TIME_ZONE = 'Asia/Seoul'
 ```
 
 ```python
 # urls.py
 
-from <폴더명> import views
+from <app 이름> import views
 ```
 
 ------------------------------------
@@ -206,6 +213,7 @@ from <폴더명> import views
    ```
 
 
+
 ## 5. Form data
 
 1. `ping`
@@ -281,3 +289,137 @@ from <폴더명> import views
      * form을 통해 POST 요청을 보낸다는 것은 데이터베이스에 반영되는 경우가 대부분인데, 해당 요청을 우리가 만든 정해진 form에서 보내는지 검증하는 것.
      * 실제로 input type hidden으로 특정한 hash값이 담겨 있는 것을 볼 수 있다.
      * `settings.py`에 `MIDDLEWARE`설정에 보면 csrf 관련된 내용이 설정된 것을 볼 수 있다. 
+
+
+
+## 6. static file 관리
+
+> 정적 파일(images, css, js)을 서버 저장이 되어 있을 때, 이를 각각의 템플릿에불러오는 방법
+
+### 디렉토리 구조
+
+> 디렉토리 구조는 `home/static/home/`으로 구성된다.
+>
+> 이 디렉토리 설정은 `setting.py`의 가장 하단에 `STATIC_URL`에 맞춰서 해야한다. (기본 `/static/`)
+
+1. 파일 생성
+
+   `home/static/home/images/image.jpg`
+
+   `home/static/home/stylesheets/style.css`
+
+2.  템플릿 활용
+
+   ```django
+   {% extends 'base.html' %}
+   {% load static %}
+   {% block css %}
+   <link rel="stylesheets" type="text/css" href="{% static 'home/stylesheets/style.css' %}">
+   {% endblock %}
+   {% block body %}
+   <img scr="{% static 'home/images/image.jpg' %}">
+   {% endblock %}
+   ```
+
+
+## 7. URL 설정 분리
+
+> 위와 같은 코드를 짜는 경우에, `django_intro/urls.py`에 모든 ulr 정보가 담기게 된다.
+>
+> 일반적으로 Django 어플리케이션에서 url을 설정하는 방법은 app 별로 `urls.py`를 구성하는 것이다.
+
+1. `django_intro/urls.py`
+
+   ```python
+   from django.contrib import admin
+   from django.urls import path, include
+   
+   urlpatterns = [
+       path('admin/', admin.site.urls),
+       path('home/', include('home.urls'))
+   ]
+   ```
+
+   * `inlcude`를 통해 `app/urls.py`에 설정된 url을 포함한다.
+
+2. `home/urls.py`
+
+   ```python
+   from django.urls import path
+   # views는 home/views.py
+   from . import views (현재 디렉토리의 views를 의미)
+   
+   urlpatterns = [
+       path('', views.index),
+   ]
+   ```
+
+   * `home/views.index` 파일에서 `index`를 호출하는 url은 `http://<host>/`가 아닌 `http://<host>/home/`이 된다.
+
+
+
+## 8. Template 폴더 설정
+
+### 디렉토리 구조
+
+> 디렉토리 구조는 `home/static/home/`으로 구성된다.
+>
+> 디렉토리 설정은 `setting.py`의 `TEMPLATES`에 다음과 같이 되어있다.
+
+```python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'django_intro', 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```
+
+
+
+* `DIRS` : templates를 커스텀하여 경로를 설정할 수 있다.
+
+  * 경로 설정
+
+    ```python
+    os.path.join(BASE_DIR, 'django_intro', 'templates')
+    #=> PROEJECT1/django_intro/templates/
+    ```
+
+* `APP_DIRS` : `INSTALLED_APPS`에 설정된 app의 디렉토리에 있는 `templates`를 템플릿으로 활용한다. (TRUE)
+
+
+
+1. 활용 예시
+
+   ```python
+   # home/views.py
+   def index(request):
+       return render(request, 'home/index.html')
+   ```
+
+   ```
+   PROJECT1
+    |
+   HOME
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── migrations
+    ├── models.py
+    ├── templates
+    │   └── uitilities
+    │       └── index.html
+    ├── tests.py
+    ├── urls.py
+    └── views.py
+   ```

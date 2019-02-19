@@ -120,7 +120,7 @@
          board.save()
          
          # 세번째 방식
-         board = Board.objects.create(title='3번 제목', content='3번 내용')`
+         board = Board.objects.create(title='3번 제목', content='3번 내용')
       ```
 
       * `save()`
@@ -196,7 +196,7 @@
    5. 추가 메소드
 
       ```python
-      # 정렬
+      # 정렬 (.all()을 하지 않아도 모든 자료를 가져옴)
       Board.objects.order_by('title')  # 오름차순 정렬
       Board.objects.order_by('-title') # 내림차순 정렬
       

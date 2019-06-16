@@ -146,32 +146,32 @@
           #=> <QuerySet [<Board: 1: 안녕>, <Board: 2: 2번글>, <Board: 3: 3번글>]>
          ```
 
-      2.  `get(pk)`
+      2. `get(pk)`
 
-          ```python
-          Board.objects.get(pk=1)
-          # Board.objects.get(id=1)
-          #=> <Board: 1: 안녕?>
-          ```
+         ```python
+         Board.objects.get(pk=1)
+         # Board.objects.get(id=1)
+         #=> <Board: 1: 안녕?>
+         ```
 
-            * `get()` 은 DB에 일치하는 값이 없으면, 오류가 발생한다.
-            * 또한, 결과가 여러개의 값이면, 오류가 발생한다.
-            * 따라서!!! `id` 즉, Primary Key 에만 사용하자!
-            * 리턴값은 **board 오브젝트** 이다!! (`filter()`, `all()` 은 모두 queryset이 리턴된다.)
+           * `get()` 은 DB에 일치하는 값이 없으면, 오류가 발생한다.
+           * 또한, 결과가 여러개의 값이면, 오류가 발생한다.
+           * 따라서!!! `id` 즉, Primary Key 에만 사용하자!
+           * 리턴값은 **board 오브젝트** 이다!! (`filter()`, `all()` 은 모두 queryset이 리턴된다.)
 
-      3.  `filter(column=value)`
+      3. `filter(column=value)`
 
-          ```python
-          Board.objects.filter(title='안녕?')
-          Board.objects.filter(id=1)
-          #=> <QuerySet [<Board: 1: 안녕>]>
-          
-          # 더블언더스코어(__) 활용
-          Board.objects.filter(title__contains='번글')
-          #=> <QuerySet [<Board: 2: 2번글>, <Board: 3: 3번글>]>
-          ```
+         ```python
+         Board.objects.filter(title='안녕?')
+         Board.objects.filter(id=1)
+         #=> <QuerySet [<Board: 1: 안녕>]>
+         
+         # 더블언더스코어(__) 활용
+         Board.objects.filter(title__contains='번글')
+         #=> <QuerySet [<Board: 2: 2번글>, <Board: 3: 3번글>]>
+         ```
 
-          * 데이터베이스에서 찾았을 때, 결과가 하나이더라도 리턴값은 QuerySet이다. 결과가 없어도 비어있는 QuerySet을 리턴한다!!
+         * 데이터베이스에서 찾았을 때, 결과가 하나이더라도 리턴값은 QuerySet이다. 결과가 없어도 비어있는 QuerySet을 리턴한다!!
 
 
 

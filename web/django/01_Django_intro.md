@@ -150,7 +150,7 @@ from <app 이름> import views
      * `template 파일 이름` (필수)
      * `template 변수` (선택) : `dictionary` 타입으로 구성해야 한다.
 
-3.  Template 설정
+3. Template 설정
 
    ```bash
    $ mkdir home/templates
@@ -176,7 +176,7 @@ from <app 이름> import views
    path('home/cube/<int:num>', views.num)
    ```
 
-2.  view 파일 설정
+2. view 파일 설정
 
    ```python
    def you(request, name):
@@ -187,7 +187,7 @@ from <app 이름> import views
        return render(request, 'cube.html', {'num':num, 'result':result})
    ```
 
-3.  template 파일 설정
+3. template 파일 설정
 
    ```django
    <!-- name.html -->
@@ -224,7 +224,7 @@ from <app 이름> import views
       path('home/ping/', view.ping)
       ```
 
-   2.  view 설정
+   2. view 설정
 
       ```python
       def ping(request):
@@ -308,7 +308,7 @@ from <app 이름> import views
 
    `home/static/home/stylesheets/style.css`
 
-2.  템플릿 활용
+2. 템플릿 활용
 
    ```django
    {% extends 'base.html' %}
@@ -423,3 +423,5 @@ TEMPLATES = [
     ├── urls.py
     └── views.py
    ```
+
+   

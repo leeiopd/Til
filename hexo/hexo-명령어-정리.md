@@ -165,4 +165,28 @@ INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.
   $ npm install hexo-deployer-git --save
   ```
 
-  
+
+
+
+
+
+### 5. 추가
+
+> node.js 프로젝트는 npm을 이용하여 의존모듈을 설치해서 사용하게 된다.
+>
+> (hexo도 마찬가지)
+>
+> npm은 프로젝트에 대한 설정을 pakage.json이라는 파일에 의존하고 있고 이 파일에 json 형식으로 작성해서 프로젝트에 대한 관리가 가능하다.
+
+* npm 모듈 버전 저장하기
+
+```bash
+npm init
+```
+
+* pakage.json 파일을 토대로 모듈 version 설치하기
+
+```bash
+npm update
+```
+

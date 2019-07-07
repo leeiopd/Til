@@ -1,6 +1,6 @@
 # Vanilla js
 
-## day1_2019-07-03
+## JS_basic_day1_2019-07-03
 
 
 

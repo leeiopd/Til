@@ -1,6 +1,6 @@
 # Vanilla js
 
-## day2_2019-07-05
+## JS_basic_day2_2019-07-05
 
 
 
@@ -157,6 +157,38 @@ title.addEventListener("click", handleClick);
 ```
 
 * 클릭 시  `#title` 의 색이 `red`로 변하는 함수
+
+
+
+```javascript
+const title = document.querySelector("#title");
+
+// function handleResize() {
+//   console.log("I have been resized");
+// }
+
+function handleResize(event) {
+  console.log(event);
+  // event 객체 작성
+}
+// addEventListener로 이벤트 발생 시
+// window.addEventListener("resize", handleResize(event));
+// 로 이벤트 발생의 함수 인자를 받도록 함.
+
+window.addEventListener("resize", handleResize);
+// addEventListner('발생을 기다릴 이벤트', 작동할 함수)
+// window.addEventListener("resize", handleResize); - 이벤트 발생 시 함수 작동
+// window.addEventListener("resize", handleResize()); - 즉시 함수 발동
+
+function handleClick() {
+  title.style.color = "red";
+}
+
+title.addEventListener("click", handleClick);
+
+```
+
+
 
 
 

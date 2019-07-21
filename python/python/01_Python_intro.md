@@ -68,8 +68,6 @@ TypeError: 'str' object is not callable
 del str
 ```
 
-
-
 ## 기초 문법
 
 ### 인코딩 선언

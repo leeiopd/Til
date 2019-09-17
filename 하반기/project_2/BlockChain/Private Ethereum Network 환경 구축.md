@@ -104,7 +104,7 @@
        	// 이더리움 네트워크 설정
            "config": {
         			// 현제 Chain의 식별 값       
-                   "chainId": 908429034891304810,
+                   "chainId": 15150,
                	// 블록체인의 릴리즈 버전
                    "homesteadBlock": 0,
                	// 하드포크, 하드포크를 하지않는 옵션 값: 0
@@ -136,13 +136,15 @@
    * Main Node 구동
 
      ```
-     geth --networkid 15150 --datadir ~/dev/pri_eth --port 30303 --rpc --rpcport 8545 --rpcaddr 0.0.0.0 --rpccorsdomain "*" --rpcapi "admin,net,miner,eth,prc,web3,typool,debug,db,personal" console
+     geth --networkid 151501 --datadir ~/dev/pri_eth --port 30303 --rpc --rpcport 8545 --rpcaddr 0.0.0.0 --rpccorsdomain "*" --rpcapi "admin,net,miner,eth,prc,web3,typool,debug,db,personal" --allow-insecure-unlock console
      ```
+
+     * unlock 설정 -`-unlock <YOUR_ACCOUNT_ADDRESS> --password <YOUR_PASSWORD>`
 
    * Sub Node 구동
 
      ```
-     geth --networkid 15150 --maxpeers 5 --datadir ~/dev/pri_eth  --port 30304 console
+     geth --networkid 151501 --maxpeers 5 --datadir ~/dev/pri_eth  --port 30304 console
      ```
 
 4. 구동된 노드 주소 확인

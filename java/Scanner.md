@@ -1,4 +1,4 @@
-# Java_scanner
+# Java_Scanner
 
 ### Scanner 클래스
 

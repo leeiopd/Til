@@ -866,3 +866,252 @@ void fun_second(void){
   * 함수의 body가 아닌 prototype 에서만  static 선언을 하여도 static function 으로 선언 됨
 
   
+
+##### 12.12 난수 생성기 모듈 만들기 예제
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main(){
+    /*
+        rand()
+        - 0 to RAND_MAX (typically INT_MAX)
+        - defined in stdlib.h.
+     */
+    
+//    srand(1); // random seed, seed 값을 바꾸면 다른 랜덤 값이 나옴
+    srand((unsigned int)time(0));   // seed 값을 매번 바꾸기 위해, time 함수를 이용
+    
+    for (int i = 0; i < 10; ++i){
+        printf("%d\n", rand());
+//        printf("%d\n", rand() % 6 + 1);
+    }
+    
+    return 0;
+}
+```
+
+* ```c
+  srand(num);
+  ```
+  * rand() 함수의 seed 값을 입력하여, rand 함수의 결과의 양상이 달라지도록 함
+
+
+
+```c
+#include <stdio.h>
+
+int main(){
+    unsigned int next = 1;
+    
+    for (int  i = 0; i < 10; ++i){
+        next = next * 1103515245 + 1234;
+        next = (unsigned int) (next / 65536) % 32768;
+        printf("%d\n", (int)next);
+    }
+    return 0;
+}
+```
+
+* rand() 함수의 내부 알고리즘 중 하나
+
+  * seed 값을 next 값으로 설정
+
+  * ```c
+    next = next * 1103515245 + 1234;
+    ```
+
+    * over flow 를 이용
+
+  * ```c
+    next = (unsigned int) (next / 65536) % 32768;
+    ```
+
+    * int 형과 자리수를 맞추는 단계
+
+
+
+```c
+// main.c
+#include <stdio.h>
+#include <time.h>
+#include "my_rand.h"
+
+int main(){
+    my_srand((unsigned int)time(0));
+    
+    for (int i = 0; i < 10; ++i){
+        printf("%d\n", my_rand() % 6 + 1);
+    }
+    return 0;
+}
+
+
+// my_rand.h
+
+#define my_rand_h
+
+#include <stdio.h>
+
+void my_srand(unsigned int);
+int my_rand(void);
+
+#endif /* my_rand_h */
+
+// my_rand.c
+#include "my_rand.h"
+
+static unsigned int next = 1;
+
+void my_srand(unsigned int seed){
+    next = seed;
+}
+
+int my_rand(){
+    next = next * 1103515245 + 1234;
+    next = (unsigned int) (next / 65536) % 32768;
+    
+    return (int)next;
+}
+```
+
+
+
+
+
+##### 12.13 메모리 동적 할당  Dynamic Storage Allocation
+
+![12_13_1](imgs/12_13_1.png)
+
+* 동적 할당 메모리는 포인터만 가져오고 인식자가 없음
+* Heap 메모리 영역에 저장, 프로그래머가 반납하기 전까지 유지
+  * 프로그램이 종료되면 자동 반납
+* 필요한 메모리의 크기를 미리 알 수 없을 경우 사용
+  * Runtime 에 메모리 크기가 결정되는 경우, VLA 가변 길이 배열 등
+
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h> // malloc(), free()
+
+int main(){
+    /*
+        malloc() returns a void type pointer.
+        void% : generic pointer
+     
+        free() deallocates the memory
+     */
+    
+    double* ptr = NULL;
+    
+    ptr = (double*)malloc(30 * sizeof(double));
+    
+    if (ptr == NULL){
+        puts("Memory allocation failed.");
+        
+        /*
+            exit(EXIT_FAILURE) is similar to return 1 IN main().
+            exit(EXIT_SUCCESS) is similar to return 0 IN main().
+         */
+        
+        exit(EXIT_FAILURE);
+    }
+    
+    printf("Before free %p\n", ptr);
+  	// Before free 0x100611950
+    
+    free(ptr);
+    
+    printf("After free %p\n", ptr);
+  	// After free 0x100611950
+    
+    ptr = NULL; // optional
+    
+    return 0;
+}
+
+```
+
+* ```c
+  double* ptr = NULL;
+  ptr = (double*)malloc(30 * sizeof(double));
+  ```
+
+  * 운영체제에게 메모리를 요청할때는 Memory allocation - malloc() 함수 사용
+
+    * ```c
+      malloc(필요한 공간 입력, size_t type);
+      ```
+
+      * 입력한 공간 만큼 heap 메모리 공간을 할당
+      * 할당된 연속된 메모리 공간의 첫번째 주소를 반환
+      * 반환 값은 void 형의 pointer - generic pointer
+
+    * ```c
+      (double*)malloc(필요한 공간 입력, size_t type);
+      ```
+
+      * 반환 된 void 형의 pointer 값을 double 형의 pointer 로 변환
+
+* ```c
+  if (ptr == NULL){
+    exit(EXIT_FAILURE);
+  }
+  ```
+
+  * 메모리 공간이 할당되지 않았을 때의 Error 처리
+
+  * ```c
+    exit(EXIT_FAILURE);
+    ```
+
+    * 어떤 위치에서든 프로그램 강제 종료
+
+* ```c
+  free(ptr);    
+  ptr = NULL; // optional
+  ```
+
+  * 메모리를 반환 하여도 ptr 값은 메모리 주소를 가르키고 있으므로, NULL 처리 하는것이 좋다
+
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h> // malloc(), free()
+
+int main(){
+    /*
+        Dynamically Allocated Array
+     */
+    int n = 5;
+    double* ptr = (double*)malloc(n * sizeof(double));
+    
+    if (ptr != NULL){
+        for (int i = 0; i < n; ++i)
+            printf("%f ", ptr[i]);
+        printf("\n");
+        
+        for (int i = 0; i < n; ++i)
+            *(ptr + i) = (double)i;
+        
+        for (int i = 0; i < n; ++i)
+            printf("%f ", ptr[i]);
+        printf("\n");
+    }
+    
+    free(ptr);
+    ptr = NULL;
+    
+    return 0;
+}
+```
+
+* 동적 할당 메모리를 길이가 변할 수 있는 배열처럼 사용 가능, VLA 보다 동적 할당 메모리가 선호됨
+  * 동적 할당 메모리를 배열로 사용하면 크기를 변화시키는 것이 가능한 것이 장점
+  * VLA 는 stack 영역(컴파일러에 따라 다름), 동적할당 메모리는 Heap 영역
+  * Heap 영역의 크기가 stack의 크기보다 큼
+

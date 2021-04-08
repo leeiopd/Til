@@ -116,6 +116,7 @@ int main(){
 * ```c
   int var_name = 3;
   ```
+
   * int 형이 저장되도록 할당된 메모리 공간에 3이라는 값을 복사해서 넣어줌
   * 메모리 공간에 접근 시 var_name 라는 이름을 통해서, Object 를 직접 사용하는 것 처럼 작동
 
@@ -655,6 +656,7 @@ int main(){
 * ```c
   //int func(static int i); // Error
   ```
+
   * 함수가 실행 될 때 새로운 stack frame이 배정 되는데, 함수의 파라미터 변수는 함수가 실행이 될 때 메모리를 할당받기 때문에 static 변수가 될 수 없음
 
 
@@ -797,6 +799,7 @@ void fun_sec(){
   ```c
   static int g_int = 10;
   ```
+
   * extern 으로 호출 불가능
 
 
@@ -896,6 +899,7 @@ int main(){
 * ```c
   srand(num);
   ```
+
   * rand() 함수의 seed 값을 입력하여, rand 함수의 결과의 양상이 달라지도록 함
 
 
@@ -1114,4 +1118,670 @@ int main(){
   * 동적 할당 메모리를 배열로 사용하면 크기를 변화시키는 것이 가능한 것이 장점
   * VLA 는 stack 영역(컴파일러에 따라 다름), 동적할당 메모리는 Heap 영역
   * Heap 영역의 크기가 stack의 크기보다 큼
+
+
+
+##### 12.14 메모리 누수 Leak 와 free() 의 중요성
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    printf("Dummy Output\n");
+    
+    {
+        // Heap Memory가 할당되는 block
+        int  n = 100000000;
+        
+        // Heap 메모리 공간 요청, 시작 주소값 ptr 에 저장
+        int* ptr = (int*)malloc(n * sizeof(int));
+        
+        if (!ptr)// if(ptr == NULL)
+        {
+            printf("Malloc() failed\n");
+            exit(EXIT_FAILURE);
+        }
+        
+        for (int i = 0; i < n; ++i)
+            ptr[i] = i+1;
+        
+        printf("Dummy Output\n");
+    }
+    // Heap Memory가 할당되는 block이 끝나도 ptr 에 저장된 주소값은 사라지지만
+    // 할당된 Heap Memory는 남아 있고, 접근할 방법도 없어져 버림
+    
+    printf("Dummy Output\n");
+    
+    return 0;
+}
+```
+
+* block이 끝나버려, ptr를 통해 메모리 접근을 할수 없음
+
+* 하지만 free() 선언을 하지 않았기 때문에, 동적 할당 받은 Heap 메모리 공간은 유지가 됨
+
+  * 메모리 누수 발생
+
+* ```c
+  free(ptr);
+  ptr = NULL
+  ```
+
+  * 메모리 반환을 해 주어야함
+
+* block 에서 동적 할당 받은 메모리 주소 값을 backup 을 해 두는 방법도 있다
+
+  * ```c
+    int* ptr_backup
+    {
+    		// 
+      	ptr_backup = ptr;
+      	//
+    }
+    //
+    free(ptr_free);
+    ```
+
+
+
+##### 12.15 동적 할당 메모리를 배열처럼 사용하기
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    /*
+        One variable
+     */
+    
+    int* ptr = NULL;
+    
+    ptr = (int*)malloc(sizeof(int)*1);
+    if (!ptr) exit(1);
+    
+    *ptr = 1024 * 3;
+    printf("%d\n", *ptr);
+    
+    free(ptr);
+    ptr = NULL;
+    
+    return 0;
+}
+```
+
+* 변수 하나를 동적 할당으로 사용
+
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    /*
+        1D array
+     */
+    
+    int n = 3;
+    int* ptr = (int*)malloc(sizeof(int) * n);
+    
+    if(!ptr) exit(1);
+    
+    ptr[0] = 123;
+    *(ptr + 1) = 456;
+    *(ptr + 2) = 789;
+    
+    free(ptr);
+    ptr = NULL;
+    
+    return 0;
+}
+```
+
+* ```c
+  *(ptr + 1) = 456;
+  ```
+
+  * *(ptr+1) = ptr 주소 값 + int size  = ptr[1]
+
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    /*
+        2D array
+     */
+    
+    int row = 3, col = 2;
+    int(*ptr2d)[2] = (int(*)[2])malloc(sizeof(int) * row * col);
+    //int(*ptr2d)[col] = (int(*)[col])malloc(sizeof(int) * row * col); // VLA
+    
+    if (!ptr2d) exit(1);
+    
+    for (int r = 0; r < row; r++)
+        for (int c = 0; c < col; c++)
+            ptr2d[r][c] = c + col * r;
+    
+    for (int r = 0; r < row; r++){
+        for (int c = 0; c <col; c++)
+            printf("%d ", ptr2d[r][c]);
+        printf("\n");
+    }
+    
+    return 0;
+}
+```
+
+* ```c
+  int(*ptr2d)[2] = (int(*)[2])malloc(sizeof(int) * row * col);
+  ```
+
+  * 동적 할당을 이용했지만, col 갯수는 지정되어 있어서 효용성이 떨어짐
+
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    /*
+        Using 1D arrays as 2D arrays
+     
+        row = 3, col = 2
+     
+        (r, c)
+     
+        2D
+        (0, 0), (0, 1)
+        (1, 0), (1, 1)
+        (2, 0), (2, 1)
+     
+        1D
+        (0, 0) (0, 1) (1, 0) (1, 1) (2, 0) (2, 1)
+        0      1      2      3      4      5        = c + col * r
+     */
+    
+    int row = 3, col = 2;
+    int* ptr = (int*)malloc(sizeof(int) * row * col);
+    
+    if (!ptr) exit(1);
+    
+    for (int r = 0; r < row; r++)
+        for (int c = 0; c < col; c++)
+            ptr[c + col * r] = c + col * r;
+    
+    for (int r = 0; r < row ; r++){
+        for (int c = 0; c < col; c++)
+            printf("%d ", *(ptr + c + col * r));
+        printf("\n");
+    }
+    
+    return 0;
+}
+```
+
+* 동적 할당 1차원 배열을, 2차원 배열로 사용
+
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    /*
+        Using 1D arrays as 3D arrays
+     
+        row = 3, col = 2, depth = 2
+     
+        (r, c, d)
+     
+        3D
+        -------------------
+        (0, 0, 0) (0, 1, 0)
+        (1, 0, 0) (1, 1, 0)
+        (2, 0, 0) (2, 1, 0)
+        -------------------
+        (0, 0, 1) (0, 1, 1)
+        (1, 0, 1) (1, 1, 1)
+        (2, 0, 1) (2, 1, 1)
+        -------------------
+     
+        1D
+        (0, 0, 0) (0, 1, 0) (1, 0, 0) (1, 1, 0) (2, 0, 0) (2, 1, 0) (0, 0, 1) (0, 1, 1) (1, 0, 1) (1, 1, 1) (2, 0, 1) (2, 1, 1)
+        0         1         2         3         4         5         6         7         8         9         10         11
+        = c + col * r + (col * row) * d
+     
+        3D
+        rw, col, depth, height
+     */
+    
+    int row = 3, col = 2, depth = 2;
+    int* ptr = (int*)malloc(sizeof(int) * row * col * depth);
+    
+    if (!ptr) exit(1);
+    
+    for (int d = 0; d < depth; d++)
+        for (int r = 0; r < row; r++)
+            for (int c = 0; c < col; c++)
+                ptr[c + col * r + (row * col) * d] = c + col * r + (row * col) * d;
+    
+    for (int d = 0; d < depth; d++)
+        for (int r = 0; r < row; r++)
+            for (int c = 0; c < col; c++)
+                printf("%d ", *(ptr + c + col * r + (row * col) * d));
+            printf("\n");
+        printf("\n");
+  
+    return 0;
+}
+```
+
+* 동적 할당 1차원 배열을, 3차원 배열로 사용
+
+
+
+##### 12.16 colloc(), realloc()
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int n = 10;
+    
+    int* ptr = NULL;
+    
+//    ptr = (int*)malloc(sizeof(int)*n);
+    ptr = (int*)calloc(n, sizeof(int));
+    
+    if(!ptr) exit(1);
+    
+    for(int i = 0; i < n; i++)
+        printf("%d ", ptr[i]);
+  	// 0 0 0 0 0 0 0 0 0 0 
+  
+    printf("\n");
+    
+    return 0;
+}
+```
+
+* ```c
+  (변환할 형*)calloc(크기, 사이즈);
+  ```
+
+  * malloc() 과 달리 calloc()은 2개의 인자를 받음
+  * 메모리 공간 할당시, 0으로 자동 초기화
+
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    /*
+        realloc()
+        - doesn't initialize the bytes added
+        - returns NULL if can;t enlarge the memory block
+        - If first argument is NULL, it behaves like malloc()
+        - If second arguemnt is 0, it frees the memory block.
+     */
+    
+    int n = 10;
+    int* ptr = (int*)calloc(n, sizeof(int));
+    
+    for (int i = 0; i < n; ++i)
+        ptr[i] = i + 1;
+    
+    n = 20;
+    
+    int* ptr2 = NULL;
+    ptr2 = (int*)realloc(ptr, n * sizeof(int));
+    
+    printf("%p %p\n", ptr, ptr2);
+    
+    return 0;
+}
+```
+
+* ```c
+  int* ptr2 = NULL;
+  ptr2 = (int*)realloc(ptr, n * sizeof(int));
+  ```
+
+  * realloc()은 2개의 인자를 받음
+
+    * 할당받은 메모리 블럭의 pointer, NULL pointer 면 malloc() 으로 동작
+    * 새로 할당받을 메모리 사이즈
+
+  * ```c
+    ptr = (int*)realloc(ptr, n * sizeof(int));
+    ```
+
+    * 기존 할당받은 메모리 블럭의 사이즈를 변겨하는것도 가능
+    * 추가된 공간의 초기화는 해주지 않음
+
+
+
+##### 12.17 동적 할당 메모리와 저장 공간 분류
+
+![12_17_1_변수의 메모리 사용과 메모리 주소](imgs/12_17_1.png)
+
+* 변수의 메모리 사용과 메모리 주소
+
+
+
+##### 12.18 자료형 한정자 Type Qualifiers 들 const, volatile, restrict
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(){
+    /*
+        Qualified types
+        const, volatile, restrict, _Atomic
+     */
+    
+    /*
+        const
+     */
+    
+    
+    const const const int n = 6;    // const int n = 6;
+    
+    typedef const int zip;
+    const zip q = 8;    // const const in zip
+    
+    //const int i;  // NOT Initialized!
+    //i = 12;   // Error
+    //printf("%n", i);  // Error
+    
+    const int j = 123;
+    const int arr[] = {1, 2, 3};
+  
+  	return 0;
+}
+```
+
+* ```c
+  const const const int n = 6;
+  ```
+
+  * const 여러번 사용 가능
+
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(){
+    /*
+        Qualified types
+        const, volatile, restrict, _Atomic
+     */
+    
+    /*
+        const
+     */
+    
+    float f1 = 3.14, f2 = 1.2f;
+    
+    const float* pf1 = &f1;
+    //*pf1 = 5.0f;  // Error
+    pf1 = &f2;
+
+    printf("%f %p\n", f1, &f1);
+  	// 3.140000 0x7ffeefbff438
+    printf("%f %p\n", f2, &f2);
+  	// 1.200000 0x7ffeefbff434
+    printf("%f %p\n", *pf1, pf1);
+  	// 1.200000 0x7ffeefbff434
+    
+    return 0;
+}
+```
+
+* ```c
+  const float* pf1 = &f1;
+  //*pf1 = 5.0f;  // Error, Read-only variable is not assignable
+  pf1 = &f2;
+  ```
+
+  * pf1 에 대입되는 주소값은 변경 가능하지만, 메모리 주소에 저장되어 있는 값은 변경 불가
+
+* ```c
+  float* const pf1 = &f1;
+  pf1 = &f2;	// Error, Cannot assign to variable 'pf1' with const-qualified type 'float *const'
+  ```
+
+* ```c
+  const float* const pf1 = &f1;
+  //pf1 = &f2; // Error, Cannot assign to variable 'pf1' with const-qualified type 'const float *const'
+  ```
+
+
+
+```c
+// global constnt file - constants.h
+
+const double gravity = 9.8;
+const double PI = 3.141592;
+
+// main.c
+#include "constants.h"
+
+int main(){
+    /*
+        Global constants
+     */
+    
+  	double area_circle = PI * 2.0f * 2.0f;
+  
+	  return 0;
+}
+```
+
+* global constant 의 사용은 header 를 만들어 사용하는것이 좋음
+
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(){
+    /*
+        volatile
+        - Do not optimize
+        - (ex: hardward clock)
+     */
+    
+    volatile int vi = 1;    // volatile location
+    volatile int* pvi = &vi;    // points to a volatile location
+    
+    int i1 = vi;
+    
+    // 무언가 외부에서 vi 값을 변경시키는 코드
+    
+    int i2 = vi;
+    
+    return 0;
+}
+```
+
+* ```c
+  int i1 = vi;    
+  // 무언가 외부에서 vi 값을 변경시키는 코드
+  int i2 = vi;
+  ```
+
+  * compiler 가 모르게 값이 변경되면, compiler 의 최적화에 의해 원하지 않은 결과가 발생 할 수 있음
+  * compiler 는 자주 사용되는 vi 를 최적화 하려고 하기 때문
+
+* volatile : 컴파일러가 모르는 상황에서 변수의 값이 변경 될 수 있는 것을 선언
+
+  * 컴파일러가 cacing 최적화 하는것을 방지, embadded programing 에서 주로 사용
+
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(){
+    /*
+        restirct (_restrict in VS)
+        - sole initial means of accessing a data obejct
+        - compiler can't check this restriction
+     */
+    
+    int ar[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int* par = ar;
+    
+    ar[0] += 3;
+    par[0] += 5;
+    // par[0] += 8;
+  
+  	int* restrict restar = (int*)malloc(10 * sizeof(int));
+    if (!restar) exit(1);
+    
+    restar[0] += 3;
+    restar[0] += 5;
+    //restar[0] += 8;   // Equalivalent
+    
+    return 0;
+}
+```
+
+* ```c
+  int ar[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+  int* par = ar;
+  ar[0] += 3;
+  par[0] += 5;
+  // par[0] += 8;
+  ```
+
+  * compiler는 같은 주소값에 대한 연산을 한번에 처리( +3 +5 == +8) 하는것이 효율적이지만 다른 표현으로 연산을하기 때문에 한번에 처리하지 못함
+
+* ```c
+  int* restrict restar = (int*)malloc(10 * sizeof(int));
+  if (!restar) exit(1);
+  restar[0] += 3;
+  restar[0] += 5;
+  //restar[0] += 8;   // Equalivalent
+  ```
+
+  * restrict 로 선언시, 다른 표현으로의 접근을 방지하기 때문에 compiler 가 연산을 한번에 처리하는 최적화를 해 줄수 있음
+    * complier 의 최적화를 도와줌
+  * 하지만, compiler 는 정말로 한가지 표현만으로 접근하는지는 알 수 없음
+    * 프로그래머가 인지해야 함
+
+
+
+##### 12.19 멀티 쓰레딩 Multi-Threading
+
+![12_19_1_멀티쓰레딩의 개념](imgs/12_19_1.png)
+
+* Process : 실행중에 있는 프로그램
+  * Process 내부에는 최소 하나의 Thread 를 가지고 있음, 실제로 Thread 단위로 스케줄링을 함
+  * 하드디스크에 있는 프로그램을 실행하면, 실행을 위한 메모리 할당이 이루어지고, 할당된 메모리 공간으로 바이너리 코드가 올가가게 됨. 이 순간부터 Process 라고 불림
+* Thread : Process 내에서 실행되는 여러 흐름의 단위
+  * Process 의 특정한 수행 경로, 할당 받은 지원을 이용하는 실행 단위
+  * Thread 는 Process 내에서 각각 Stack 만 따로 할당받고, Code, Data, Heap 영역은 공유
+* Multi Threading : 여러 Thread 로 병렬 작업
+  * 현존하는 거의 모든 CPU 는 Multi-Core Processer 로서, 최근에는 Multi-Threading 을 이용한 동시성 프로그래밍/병렬 처리 기술이 보편화 되어 있음
+  * 여러개의 Thread 가 하나의 함수를 동시에 실행 시킬 때, 메모리상에는 그 함수들을 실행 시키기 위한 데이터 카피본(사용되는 변수들)이 동시에 생성됨
+  * 하나의 전역변수를 여러개의 Thread 가 동시에 접근해서 사용 할 때, Memory 상의 값이 연산 도중에 다른 Thread 에 의해 변경되는 문제가 발생 할 수 있음
+
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h> // sleep()
+#include <pthread.h>
+#include <stdatomic.h>  // _Atomic
+
+_Atomic int acnt = 0;   // atomic type qualifer (C11)
+
+// A normal C function that is executed as a thread
+// when its name is spectified in pthread_create()
+
+void* myThreadFun(void *vgrap){
+    int n = 1;  // thread storage duration
+    for (int j = 0; j < 1; ++j){
+        sleep(2);
+        acnt += 1;
+        printf("Printing from Thread %d %llu \n", acnt, (unsigned long long)&n);
+    }
+    return NULL;
+}
+
+int main(){
+    pthread_t thread_id1, thread_id2;
+    
+    printf("Before Thread\n");
+  	// Before Thread
+    
+    pthread_create(&thread_id1, NULL, myThreadFun, NULL);
+  	// Printing from Thread 2 123145379876772 
+
+    pthread_create(&thread_id2, NULL, myThreadFun, NULL);
+  	// Printing from Thread 1 123145380413348 
+    
+    pthread_join(thread_id1, NULL);
+    pthread_join(thread_id2, NULL);
+    
+    printf("After Thread\n");
+  	// After Thread
+    printf("Atomic %d \n", acnt);
+	  // Atomic 2 
+    
+    return 0;
+}
+```
+
+* ```c
+  _Atomic int acnt = 0;   // atomic type qualifer (C11)
+  ```
+
+  *  _Atomic 변수로 race conditon을 방지
+    * race condition : 여러 Thread 에서 여러 함수들이 실행이 될 때, 각각의 Thread 에서 동일한 변수를 접근 할때 일관성이 깨지는 문제가 발생 할 수 있음
+  * Atomic 연산은 일반 연산보다 느림
+
+* ```c
+  pthread_t thread_id1, thread_id2;
+  ```
+
+  * Thread 의 식별, 내부적으로 Thread 의 변수 처럼 사용
+
+* ```c
+  pthread_create(&thread_id1, NULL, myThreadFun, NULL);
+  pthread_create(&thread_id2, NULL, myThreadFun, NULL);
+  ```
+
+  * 새로운 Thread 에 myThreadFun 을 실행시키고 그 식별자를 thread_id1 으로 지정
+  * &thread_id1 - 함수의 매개변수로서 포인터를 사용
+  * 내부적으로 Thread 에 myThreadFun 함수 copy 두개가 작동하게 됨
+
+* ```c
+  pthread_join(thread_id1, NULL);
+  pthread_join(thread_id2, NULL);
+  ```
+
+  * main 함수가 끝나면 다른 프로그램이 종료 되기 때문에, main Thread 가 다른 Thread 들이 종료 될 때 까지 기다림
 

@@ -840,7 +840,7 @@ new HiKo();
 
 * vendor 폴더가 생성됨
 
-![17_12_1__vendorDirectory](imgs/17_12_1.png)
+![17_12_1__vendorDirectory](./imgs/17_12_1.png)
 
 
 
@@ -1122,6 +1122,132 @@ $obj = new ChildClass();
 ```
 
 * final 로 선언한 ParentClass 는 상속이 불가
+
+
+
+
+
+
+
+##### 17.16 Interface
+
+* 서로다른 시스템이 결합되는 접점을 의미
+
+
+
+```php
+<?php
+interface ContractInterface
+{
+    public function promiseMethod(array $param):int;
+}
+
+class ConcreateClass implements ContractInterface{
+    public function promiseMethod(array $param):int{
+        return 1;
+    }
+}
+
+$obj = new ConcreateClass();
+$obj->promiseMethod([1, 2]);
+?>
+```
+
+* interface 로 class 의 format 을 만들어 class 를 선언할때 implements 하여 사용
+  * method 의 parameter 와 retrun 형식도 정의 가능
+
+
+
+
+
+```php
+<?php
+interface ContractInterface
+{
+    public function compare(string $str1, string $str2):bool;
+}
+
+// class Dummy implements ContractInterface
+// {
+//     public function compare(string $str1, string $str2):bool
+//     {
+//         return true;
+//     }
+// }
+
+
+class Concreate implements ContractInterface
+{
+    public function compare(string $str1, string $str2):bool
+    {
+        if($str1 === $str2)
+        {
+            return true;
+        }
+        return false;
+    }
+}
+
+$obj = new Concreate();
+if ($obj->compare('test1', 'test2')) {
+    echo '<h1>same</h1>';
+} else {
+    echo '<h1>different</h1>';
+}
+```
+
+* 협업 시 활용도가 높다
+
+
+
+
+
+
+
+
+
+##### 17.17 Abstract
+
+* 클래스의 메소드를 하위 클래스가 반드시 오버라이드 하도록 하는 것
+  * 부모 클래스의 일부 기능을 하위 클래스가 구현하도록 강제 할 수 있다
+
+
+
+* 상속
+  * parentClass - ChildClass
+  * 자식 클래스가 부모 클래스를 extends 하게 되면  method 를 상속받게 됨
+* 구현
+  * ConcreateClass - Interface 
+  * class 가 구현 할 때 interface 를 implements 하게 되면, interface에 정의된 method 를 반드시 정의 해야함
+
+
+
+* Absctract
+  * 상속과 동시에 구현을 강제함
+
+
+
+
+
+```php
+<?php
+abstract class ParentClass{
+    public function a(){
+        echo 'a';
+    }
+
+    public abstract function b();
+}
+
+class ChildClass extends ParentClass{}
+?>
+
+// Fatal error: Class ChildClass contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (ParentClass::b) in ...
+```
+
+* abstract method 인 b 가 구현되지 않아 Error
+* 하나 이상의 abstract method 를 멤버로 가진 class 도 선언 시  abstract 로 선언 해 주어야 한다
+* abscract method 는 자식이 구현하는것을 강제하므로,  부모 클래스에서는 정의하지 않는다
 
 
 

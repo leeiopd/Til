@@ -1048,6 +1048,10 @@ $obj = new ChildClass();
 $obj->callProtected();
 echo $obj->_protected;
 ?>
+  
+// protected
+
+// Fatal error: Uncaught Error: Cannot access protected property ChildClass::$_protected ... on line 14
 ```
 
 * protected 로 선언
@@ -1250,4 +1254,101 @@ class ChildClass extends ParentClass{}
 * abscract method 는 자식이 구현하는것을 강제하므로,  부모 클래스에서는 정의하지 않는다
 
 
+
+
+
+##### 17.18 abstract 를 사용한 template design Pattern
+
+
+
+```php
+<?php
+abstract class AbstractPageTemplate
+{
+  protected final function template()
+  {
+    $result = $this->header();
+    $result .= $this->article();
+    $result .= $this->footer();
+    return $result;
+  }
+  
+  protected abstract function header();
+  protected abstract function article();
+  protected abstract function footer();
+  
+  public function render()
+  {
+    return $this->template();
+  }
+}  
+?>
+```
+
+* template method 에는 출력하고자 하는 정보의 구조가 들어 있음
+  * header, acticle, footer 의 출력과 출력순서
+* header / acticle / footer 의 method 는 추상화 되어 있음
+  * 자식 class 가 구체적으로 구현하게 됨 - protected abstract 로 선언
+* template method 는 화면에 출력되는 foramt 과 순서를 정하였기 때문에 final 로 상속되지 않게 하여, 자식 class 가 overriding 으로 변경할 수 없도록 함
+* render method 의 경우에는 templete method 에 의해 출력되는 foramt 전후로 추가적인 출력이 필요한 경우 overriding 할수 있도록 public 으로 선언됨
+
+
+
+```php
+<?php
+class TextPage extends AbstractPageTemplate
+{
+  protected function header()
+  {
+    return "PHP\n";
+  }
+  
+  protected function article()
+  {
+    return "PHP: Hypertext Preprocessor\n";
+  }
+  
+  protected function footer()
+  {
+    return "website is php.net\n";
+  }
+}
+?>
+```
+
+* 부모 class (AbstractPageTemplate class) 에서 abscract 로 선언한 header/article/footer method 를 구현
+
+
+
+```php
+<?php
+class HtmlPage extends AbstractPageTemplate
+{
+  protected function header()
+  {
+    return "<header>PHP</header>\n";
+  }
+  
+  protected function article()
+  {
+    return "<article>PHP: Hypertext Preprocessor</article>\n";
+  }
+  
+  protected function footer()
+  {
+    return "<footer>website is php.net</footer>\n";
+  }
+    
+  public function render()
+  {
+    $result = '<html>';
+    $result .= $this->template();
+    return $result.'</html>';
+  }
+}
+?>
+```
+
+* 부모 class (AbstractPageTemplate class) 에서 abscract 로 선언한 header/article/footer method 를 구현
+* textPage Class 와 구조는 같지만, 출력되는 format 이 달라짐
 

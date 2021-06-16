@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function test1(a) {
+        console.log(a);
+      }
+      test1(10);
+      // 10
+
+      function test2(a, b) {
+        console.log('a는 ' + a);
+        console.log('b는 ' + b);
+      }
+      test2(10, 'hahahah');
+      // a는 10
+      // b는 hahahah
+
+      function sum(a, b) {
+        return a + b;
+      }
+      var c = sum(10, 20);
+      console.log(c);
+      // 30
+
+      var fnc = function () {
+        console.log('sum 함수를 호출했나요');
+      };
+      var c = fnc();
+      // "sum 함수를 호출했나요"
+
+      function Car(a, b) {
+        this.name = a;
+        this.color = b;
+      }
+
+      var a = new Car('현대', '빨강');
+      console.log(a.name);
+      console.log(a.color);
+
+      var b = new Car('기아', '노랑');
+      console.log(b.name);
+      console.log(b.color);
+
+      function Car2(a, b, c) {
+        this.name = a;
+        this.color = b;
+        var move = c;
+      }
+
+      var c = new Car2('현대', '노랑', '전진');
+      console.log(c.name);
+      console.log(c.color);
+      console.log(c.move);
+    </script>
+  </body>
+</html>

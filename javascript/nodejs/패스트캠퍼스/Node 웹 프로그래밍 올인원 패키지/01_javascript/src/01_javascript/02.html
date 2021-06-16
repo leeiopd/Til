@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      for (var i = 0; i < 5; i = i + 1) {
+        document.write('화면에 찍어주세요');
+        document.write('<br>');
+      }
+
+      var i = 0;
+      while (i < 5) {
+        document.write('화면에 찍어주세요');
+        document.write('<br>');
+        i = i + 1;
+      }
+
+      var i = 0;
+      do {
+        document.write('화면에 찍어주세요');
+        document.write('<br>');
+        i = i + 1;
+      } while (i < 5);
+
+      for (var i = 2; i <= 9; i++) {
+        for (var j = 1; j <= 9; j++) {
+          document.write(i + 'x' + j + '=' + i * j);
+          document.write('<br>');
+        }
+      }
+    </script>
+  </body>
+</html>

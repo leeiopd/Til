@@ -123,6 +123,7 @@
   ```
 
 
+
 ## 7. DP(Dynamic Programming)
 
 * 동적 계획(Dynamic Programming) 알고리즘은 그리디 알고리즘과 같이 최적화 문제를 해결하는 알고리즘이다

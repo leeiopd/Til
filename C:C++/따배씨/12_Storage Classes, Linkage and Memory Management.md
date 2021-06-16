@@ -48,7 +48,7 @@
 
 
 
-##### 12.2 객체 Object 와 시별자 Identifier, L-value 와 R-value
+##### 12.2 객체 Object 와 식별자 Identifier, L-value 와 R-value
 
 ```c
 #include <stdio.h>
@@ -1387,7 +1387,7 @@ int main(){
 
 
 
-##### 12.16 colloc(), realloc()
+##### 12.16 calloc(), realloc()
 
 ```c
 #include <stdio.h>

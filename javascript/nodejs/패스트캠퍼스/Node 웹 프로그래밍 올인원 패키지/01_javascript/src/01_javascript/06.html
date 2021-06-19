@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 리터럴 객체 선언
+      var a = {
+        a: 110,
+        b: 'hello',
+        c: function () {
+          console.log('ggg');
+        },
+      };
+      console.log(a.a);
+      console.log(a.b);
+      a.c();
+
+      var c = {};
+      var b = new Object();
+      console.log(typeof c);
+      console.log(typeof b);
+
+      Object.prototype.sum = function () {
+        console.log(this.a + 20);
+      };
+
+      a.sum();
+      b.sum();
+    </script>
+  </body>
+</html>

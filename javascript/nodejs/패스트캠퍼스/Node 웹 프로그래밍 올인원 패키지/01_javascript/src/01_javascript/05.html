@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function Car(a, b) {
+        this.name = a;
+        this.color = b;
+      }
+
+      Car.prototype.move = function () {
+        console.log(this.name + '차이고 ' + this.color + '색');
+      };
+
+      var a = new Car('현대', '빨강');
+      a.move();
+
+      var A_array = [1, 2, 3, 4, 10];
+      Array.prototype.print = function () {
+        for (let i = 0; i < this.length; i++) {
+          console.log(i);
+        }
+      };
+
+      A_array.print();
+    </script>
+  </body>
+</html>

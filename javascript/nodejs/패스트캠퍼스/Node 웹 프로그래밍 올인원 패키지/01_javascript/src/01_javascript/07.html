@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    조건문
+
+    <script>
+        var a = 5
+        if (a < 10){
+            console.log('10 보다 작다.')
+        }
+
+        if (a == '5'){
+            console.log('5 입니다')
+        }
+
+        if (a ==='5'){
+            console.log('5 입니다.')
+        }
+
+
+        // if not
+        var b = 6
+        
+        if (b !== 5){
+            console.log('5 가 아닙니다.')
+        }
+
+
+        // if ~ else if
+        if  (a < 10){
+            console.log('10 보다 작습니다.')
+        }else if (a < 20){
+            console.log('20 보다 작습니다.')
+        }else if (a < 30){
+            console.log('30 보다 작습니다.')
+        } else{
+            console.log('30 보다 큽니다.')
+        }
+
+
+        // switch
+        switch ( "yellow" ) {
+            case "blue" :
+                console.log('파란색 입니다.')
+                break;
+        
+            case "green" :
+                console.log('초록색 입니다.')
+                break;
+
+            default : 
+            console.log("조건에 모두 벗어남.")
+        }
+
+
+        // 함수에서 사용
+        function myNum( num ){
+            if ( num < 10 ){
+                return "10보다 작습니다."
+            }else{
+                return "10보다 큽니다."
+            }
+        }
+
+        var test = myNum(15)
+        console.log(test)
+    </script>
+</body>
+</html>

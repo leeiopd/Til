@@ -19,10 +19,12 @@
       var num = 1;
       $(document).ready(function () {
         $("#num").html(num);
-        $("#plus").click(function () {
+        const a = $("#plus").click(function () {
           num++;
           $("#num").html(num);
+          return num;
         });
+        console.log(num);
       });
     </script>
   </body>

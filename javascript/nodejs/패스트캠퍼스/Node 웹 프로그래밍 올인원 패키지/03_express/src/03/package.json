@@ -1,0 +1,16 @@
+{
+  "name": "01",
+  "version": "1.0.0",
+  "description": "",
+  "main": "nonExpress.js",
+  "scripts": {
+    "start": "npx nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.9"
+  }
+}

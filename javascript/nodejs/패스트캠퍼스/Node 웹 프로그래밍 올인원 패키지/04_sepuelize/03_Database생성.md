@@ -2,7 +2,7 @@
 
 ### 04. Sequelize
 
-##### 02_Database 생성
+##### 03_Database 생성
 
 ```bash
 #mysql 실행

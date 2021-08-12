@@ -1,15 +1,11 @@
 const express = require("express");
 const nunjucks = require("nunjucks");
 const logger = require("morgan");
-const db = require("./models");
 // const bodyParser = require("body-parser");
 
 class App {
   constructor() {
     this.app = express();
-
-    // db연결
-    this.dbConnection();
 
     // 뷰엔진 셋팅
     this.setViewEngine();
@@ -31,21 +27,6 @@ class App {
 
     // error
     this.errorHandler();
-  }
-
-  dbConnection() {
-    // DB authentication
-    db.sequelize
-      .authenticate()
-      .then(() => {
-        console.log("Connection has been established successfully.");
-      })
-      .then(() => {
-        console.log("DB Sync complete.");
-      })
-      .catch((err) => {
-        console.error("Unable to connect to the databse:", err);
-      });
   }
 
   setMiddleWare() {

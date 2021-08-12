@@ -3,16 +3,21 @@
 <table class="table table-bordered table-hover">
   <tr>
     <th>제목</th>
+    <th>가격</th>
     <th>작성일</th>
     <th>삭제</th>
   </tr>
+
+  {% for product in products %}
   <tr>
-    <td>제품 이름</td>
-    <td>2021-07-07</td>
+    <td>{{product.name}}</td>
+    <td>{{product.price}}</td>
+    <td>{{product.createdAt}}</td>
     <td>
       <a href="/admin/products/write" class="btn btn-danger">삭제</a>
     </td>
   </tr>
+  {% endfor %}
 </table>
 
 <a href="/admin/products/write" class="btn btn-default">작성하기</a>

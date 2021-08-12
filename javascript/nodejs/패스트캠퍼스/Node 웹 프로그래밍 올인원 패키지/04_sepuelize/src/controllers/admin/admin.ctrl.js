@@ -2,7 +2,11 @@
 const models = require("../../models");
 
 exports.get_product = (_, res) => {
-  res.render("admin/products.html", { message: "hello" });
+  // res.render("admin/products.html", { message: "hello" });
+  models.Products.findAll({}).then((products) => {
+    // key 와 value 가 일치하게 사용 하기 때문에, products 로 응답을 보냄
+    res.render("admin/products.html", { products });
+  });
 };
 
 exports.get_product_write = (_, res) => {

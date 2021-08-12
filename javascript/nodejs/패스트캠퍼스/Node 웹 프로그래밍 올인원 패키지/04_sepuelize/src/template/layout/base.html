@@ -12,7 +12,7 @@
   </head>
   <body>
     <!-- 현재 url -->
-    {{ req_path }}
+    <!-- {{ req_path }} -->
 
     <div class="container" style="padding-top: 10px">
       <nav class="navbar navbar-inverse">
@@ -22,15 +22,16 @@
             id="bs-example-navbar-collapse-9"
           >
             <ul class="nav navbar-nav">
-              {# <li class="active">
+              {#
+              <li class="active">
                 <a href="/admin/products">List</a>
               </li>
               <li>
                 <a href="/admin/products/write">Write</a>
-              </li> #}
-              {% from "macro/link.html" import link %}
-              {{ link('/admin/products', "List", req_path )}}
-              {{ link('/admin/products/write', "List", req_path )}}
+              </li>
+              #} {% from "macro/link.html" import link %} {{
+              link('/admin/products', "admin", req_path )}} {{
+              link('/admin/products/write', "write", req_path )}}
             </ul>
           </div>
         </div>

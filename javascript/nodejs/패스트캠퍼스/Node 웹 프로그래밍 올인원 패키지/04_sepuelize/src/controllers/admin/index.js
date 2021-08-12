@@ -6,6 +6,6 @@ const ctrl = require("./admin.ctrl");
 
 router.get("/products", ctrl.get_product);
 router.get("/products/write", ctrl.get_product_write);
-router.post("/products/write", ctrl.get_product_write);
+router.post("/products/write", ctrl.post_product_write);
 
 module.exports = router;

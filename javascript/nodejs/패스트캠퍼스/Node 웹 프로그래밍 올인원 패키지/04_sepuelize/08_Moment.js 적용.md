@@ -27,8 +27,6 @@ console.log(year)
 
 
 
-
-
 ```javascript
 // ./models/Products.js
 
@@ -72,7 +70,9 @@ module.exports = (sequelize, DataTypes) => {
   {% for product in products %}
   <tr>
     <td>
-      <a href="/admin/products/detail/{{ product.id }}"> {{product.name}} </a>
+      <a href="/admin/products/detail/{{ product.id }}">
+        {{product.name}}
+      </a>
     </td>
     <td>{{ product.price }}</td>
     
@@ -80,13 +80,17 @@ module.exports = (sequelize, DataTypes) => {
     <td>{{ product.dateFormat(product.createdAt) }}</td>
     <td>{{ product.createdAt }}</td>
     <td>
-      <a href="/admin/products/write" class="btn btn-danger">삭제</a>
+      <a href="/admin/products/write" class="btn btn-danger">
+        삭제
+      </a>
     </td>
   </tr>
   {% endfor %}
 </table>
 
-<a href="/admin/products/write" class="btn btn-default">작성하기</a>
+<a href="/admin/products/write" class="btn btn-default">
+  작성하기
+</a>
 {% endblock %}
 ```
 

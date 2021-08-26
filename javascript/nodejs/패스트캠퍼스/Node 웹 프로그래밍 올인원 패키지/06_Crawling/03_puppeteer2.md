@@ -1,3 +1,17 @@
+# 패스트캠퍼스 - Node 웹 프로그래밍 올인원 패키지
+
+### 06.Crawling
+
+##### 03_puppeteer2
+
+* puppeteer : 크롤링 module
+  * web browser 를 제어하여 crawling
+
+
+
+```javascript
+// ./template.js
+
 const puppeteer = require("puppeteer");
 
 //입력 할 텍스트
@@ -83,3 +97,4 @@ async function run() {
 }
 
 run();
+```

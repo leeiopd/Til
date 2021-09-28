@@ -13,4 +13,15 @@ RUN cd /src && npm install
 # Expose port
 EXPOSE  3000
 
-CMD ["node", "/src/app.js"]
+# CMD ["node", "/src/app.js"]
+
+# netcat 설치
+RUN apt-get update && apt-get install -y netcat
+
+RUN chmod +x docker-entrypoint.sh
+ENTRYPOINT ./docker-entrypoint.sh
+
+# entrypoint 와 cmd 의 차이
+# entrypoint 는 인자를 받을 수 있다.
+
+

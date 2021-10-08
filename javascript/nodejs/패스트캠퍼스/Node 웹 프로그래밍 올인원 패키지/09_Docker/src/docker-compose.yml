@@ -6,6 +6,8 @@ services:
   db:
     build: ./mysql
     restart: always
+    volumes:
+      - ./data:/val/lib/mysql
 
   adminer:
     image: adminer

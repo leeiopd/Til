@@ -1,15 +1,22 @@
 {
-  "name": "src",
+  "name": "express-online",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx nodemon -e js,html server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "redis": "^3.1.2"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "morgan": "^1.9.1",
+    "mysql2": "^2.1.0",
+    "nunjucks": "^3.2.0",
+    "redis": "^3.1.2",
+    "sequelize": "^4.42.0"
   }
 }

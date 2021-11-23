@@ -57,7 +57,7 @@
 
   * VPC 선택
   * 서브넷 이름 입력 - public subnet
-  * 가용영역 선택 - 2a
+  * 가용영역 선택 - 2c
     * 하나의 Subnet 은 하나의 가용영역에 존재
   * IPv4 CIDR 블록 - 10.0.1.0/24
     * Subnet 내부의 CIDR 블록 지정

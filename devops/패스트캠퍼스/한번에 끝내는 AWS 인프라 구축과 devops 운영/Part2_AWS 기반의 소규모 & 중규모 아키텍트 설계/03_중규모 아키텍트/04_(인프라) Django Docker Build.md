@@ -76,14 +76,22 @@
       ENV PYTHONUNBEFFERED 1 # ENV - 환경변수 설정
       
       RUN apt-get -y update # RUN - 컨테이너가 생성되면서 실행되는 명령어
+<<<<<<< HEAD
       RUN apt-get -y install vim
+=======
+      RUN apt-get -y install vim 
+>>>>>>> bfa31f3dd08bb70c135cd7ce96919c2fa55db18e
       
       RUN mkdir /srv/docker-django 
       ADD . /srv/docker-django # ADD - 현재 폴더를 /srv/docker-django 로 복제
       
       WORKDIR /srv/docker-django # WORKDIR - 실행되는 파일 위치 이동
       
+<<<<<<< HEAD
       RUN pip install --upgrade pip
+=======
+      RUN pip install --upgrate pip
+>>>>>>> bfa31f3dd08bb70c135cd7ce96919c2fa55db18e
       RUN pip install -r requirements.txt
       
       EXPOSE 8000 # EXPOSE - docker 의 컨테이너가 사용할 port 8000 

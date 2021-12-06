@@ -102,7 +102,7 @@
       worker_connections 1024;
     }
     
-    https{
+    http{
       sendfile on;
       tcp_nopush on;
       tcp_nodelay on;
@@ -121,7 +121,7 @@
       gzip on;
       gzip_disable "msie6";
       
-      include /etc/nginx/sites-enabled/ *;
+      include /etc/nginx/sites-enabled/*;
     }
     ```
 

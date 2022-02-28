@@ -76,48 +76,36 @@
       ENV PYTHONUNBEFFERED 1 # ENV - 환경변수 설정
       
       RUN apt-get -y update # RUN - 컨테이너가 생성되면서 실행되는 명령어
-<<<<<<< HEAD
       RUN apt-get -y install vim
-=======
-      RUN apt-get -y install vim 
->>>>>>> bfa31f3dd08bb70c135cd7ce96919c2fa55db18e
       
-      RUN mkdir /srv/docker-django 
+      RUN mkdir /srv/docker-django
       ADD . /srv/docker-django # ADD - 현재 폴더를 /srv/docker-django 로 복제
-      
       WORKDIR /srv/docker-django # WORKDIR - 실행되는 파일 위치 이동
-      
-<<<<<<< HEAD
-      RUN pip install --upgrade pip
-=======
-      RUN pip install --upgrate pip
->>>>>>> bfa31f3dd08bb70c135cd7ce96919c2fa55db18e
-      RUN pip install -r requirements.txt
+      RUN pip install --upgrate p
       
       EXPOSE 8000 # EXPOSE - docker 의 컨테이너가 사용할 port 8000 
       CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"] # CMD - 창에 실행할 명령어
       ```
-
-      * Dockerfile 작성
-
-    * Docker 이미지 생성 - Docker build
-
-      ```bash
-      $ docker build -t docker/django .
-      ```
-
-      * 도커 컨테이너의 이미지 생성 명령어
-      * '-t'  - tag 옵션
-      * 도커 이미지의 이름 - 'docker/django'
-      * '.' - Dockerfile 위치
-      * docker build -t '태그 이름' 'Dockerfile 위치'
-
-    * 생성된 Docker 이미지 확인
-
-      ```bash
-      $ docker image list
-      ```
-
+    
+    * Dockerfile 작성
+    
+      * Docker 이미지 생성 - Docker build
+    
+        ```bash
+        $ docker build -t docker/django .
+        ```
+    
+        * 도커 컨테이너의 이미지 생성 명령어
+        * '-t'  - tag 옵션
+        * 도커 이미지의 이름 - 'docker/django'
+        * '.' - Dockerfile 위치
+        * docker build -t '태그 이름' 'Dockerfile 위치'
+    
+      * 생성된 Docker 이미지 확인
+    
+        ```bash
+          $ docker image list
+        ```
   * Docker 실행
 
     ```bash

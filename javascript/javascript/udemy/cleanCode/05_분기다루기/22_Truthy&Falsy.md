@@ -1,6 +1,6 @@
 # Udemy - CleanCode
 
-### 3. 타입 다루기
+### 5. 분기 다루기
 
 ##### 22_Truthy&Falsy
 

@@ -1,6 +1,6 @@
 # Udemy - CleanCode
 
-### 3. 타입 다루기
+### 4. 경계 다루기
 
 ##### 16_begin-end
 

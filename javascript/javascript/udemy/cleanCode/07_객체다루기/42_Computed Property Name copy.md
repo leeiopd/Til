@@ -1,16 +1,16 @@
 # Udemy - CleanCode
 
-### 6. 배열 다루기
+### 7. 객체 다루기
 
 ##### 42_Computed Property Name
 
-* Javascript 의 속성은 property 를 가지고 있고, property 를 동적으로 다룰 수 있다.
+* Javascript 의 속성은 property 를 가지고 있고, 계산된 property 를 동적으로 다룰 수 있다.
 
 
 
 * 예1
 
-```javascript
+```react
 const LoginComponent = () => {
   const [state, setState] = useState({
     id: "",
@@ -20,6 +20,8 @@ const LoginComponent = () => {
   const handleChange = (e) => {
     setState({
       [e.target.name]: e.target.value,
+      // onChange 가 동작 할 때, event 객를 받아서 동작
+      // input 의 value 는 오른쪽, name 은 왼쪽으로 입력됨
     });
   };
 
@@ -41,6 +43,8 @@ const LoginComponent = () => {
 * 예2
 
 ```javascript
+// redux 문법
+
 const noop = createAction("INCREMENT");
 
 const reducer = handleActions(
@@ -56,6 +60,8 @@ const reducer = handleActions(
 * 예3
 
 ```javascript
+// Vuex 문법
+
 import Vuex from "vuex";
 import { SOME_MUTATION } from "./mutation-types";
 
@@ -68,6 +74,7 @@ const store = new Vuex.Store({
   mutations: {
     // computed property name
     [SOME_MUTATION](sate) {},
+    // [함수명](매개변수){함수 몸체}
   },
 });
 ```

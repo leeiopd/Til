@@ -1,6 +1,6 @@
 # Udemy - CleanCode
 
-### 6. 배열 다루기
+### 7. 객체 다루기
 
 ##### 41_Shorthand Properties
 

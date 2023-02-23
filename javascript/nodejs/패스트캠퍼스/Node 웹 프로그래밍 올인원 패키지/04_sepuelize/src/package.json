@@ -17,6 +17,6 @@
     "mysql2": "^2.3.0",
     "nodemon": "^2.0.9",
     "nunjucks": "^3.2.3",
-    "sequelize": "^4.42.0"
+    "sequelize": "^6.28.2"
   }
 }
